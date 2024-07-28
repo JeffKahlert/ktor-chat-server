@@ -1,0 +1,1 @@
+The aim of the practical part of my bachelor's thesis is to create a simple communication system that manages the exchange of encrypted messages. The encrypted exchange takes place under the implementation of the signal-protocol library. This Github repro represents the server 
