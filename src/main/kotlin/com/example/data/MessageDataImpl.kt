@@ -4,7 +4,7 @@ import com.example.data.model.Message
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 
-class MessageData(
+class MessageDataImpl(
     private val db: CoroutineDatabase
 ) : MessageDataSource {
 

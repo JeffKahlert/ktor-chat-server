@@ -13,7 +13,7 @@ fun Application.configureSecurity() {
     intercept(ApplicationCallPipeline.Features) {
         if (call.sessions.get<ChatSession>() == null) {
             val userId = call.parameters["userId"] ?: "0"
-            call.sessions.set(ChatSession(userId))
+            call.sessions.set(ChatSession(this.toString(), userId, "test"))
         }
     }
 }

@@ -7,8 +7,8 @@ import org.bson.types.ObjectId
 @Serializable
 class User(
     @BsonId
-    val id: String = ObjectId().toString(),
-    val name: String,
+    val userId: String = ObjectId().toString(),
+    val userName: String,
     val preKeyBundle: PreKeyBundle
 )
 {
