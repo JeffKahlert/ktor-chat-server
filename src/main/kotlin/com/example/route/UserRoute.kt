@@ -20,6 +20,8 @@ fun Route.userRoute(
             call.respond(HttpStatusCode.BadRequest)
         } catch (ex: JsonConvertException) {
             call.respond(HttpStatusCode.BadRequest)
-        }
+        } catch (ex: Exception) {
+        call.respond(HttpStatusCode.InternalServerError, "An error occurred: ${ex.message}")
+    }
     }
 }
