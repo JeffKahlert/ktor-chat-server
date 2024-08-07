@@ -1,11 +1,11 @@
 package com.example.data
 
-import com.example.data.model.Chat
 import com.example.data.model.Message
 import com.example.session.ChatSession
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import io.ktor.websocket.*
+import java.util.concurrent.ConcurrentHashMap
 
 
 class ChatDataImpl(
@@ -36,9 +36,9 @@ class ChatDataImpl(
         return sessions.find { it.chatId == chatId && it.userId == userId }
     }
 
-    override suspend fun broadcastMessage(message: Message) {
-        sessions.filter { it.chatId == message.chatId && it.userId == message.receiverId }.forEach { chatSession ->
-            chatSession.session.send(Frame.Text(message.content))
+    override suspend fun broadcastMessage(message: Message, members: ConcurrentHashMap<String, WebSocketSession>) {
+        members.forEach { (_, session) ->
+            session.send(Frame.Text("From ${message.senderId}: ${message.content}"))
         }
     }
 }

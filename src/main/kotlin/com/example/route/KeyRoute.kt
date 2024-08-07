@@ -17,6 +17,7 @@ fun Route.keys(keyDataSource: KeyDataSource, userDataSource: UserDataSource) {
             val clientBundle = call.receive<PreKeyBundle>()
 
             val user = User(
+                userId = clientBundle.deviceId,
                 userName = clientBundle.userName,
                 preKeyBundle = clientBundle
             )

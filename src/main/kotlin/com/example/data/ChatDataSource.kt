@@ -1,8 +1,9 @@
 package com.example.data
 
-import com.example.data.model.Chat
 import com.example.data.model.Message
 import com.example.session.ChatSession
+import io.ktor.websocket.*
+import java.util.concurrent.ConcurrentHashMap
 
 interface ChatDataSource {
 
@@ -17,5 +18,5 @@ interface ChatDataSource {
 
     suspend fun getSession(chatId: String, userId: String): ChatSession?
 
-    suspend fun broadcastMessage(message: Message)
+    suspend fun broadcastMessage(message: Message, members: ConcurrentHashMap<String, WebSocketSession>)
 }

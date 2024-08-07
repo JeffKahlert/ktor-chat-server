@@ -9,13 +9,13 @@ val appModule = module {
     single {
         KMongo.createClient().coroutine.getDatabase("ba_app_db")
     }
-    /*single {
-        ChatController(get(), get())
+    single<ChatDataSource> {
+        ChatDataImpl(get())
     }
 
     single<MessageDataSource> {
-        MessageData(get())
-    }*/
+        MessageDataImpl(get())
+    }
 
      single<UserDataSource> {
          UserDataImpl(get())
