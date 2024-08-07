@@ -1,6 +1,5 @@
 package com.example.data.model
 
-import com.example.room.Participant
 import kotlinx.serialization.Serializable
 
 
