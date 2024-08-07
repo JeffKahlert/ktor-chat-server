@@ -6,11 +6,8 @@ import com.example.session.ChatSession
 
 interface ChatDataSource {
 
-    suspend fun getAllChats(): List<Chat>
 
-    suspend fun insertChat(chat: Chat)
-
-    suspend fun saveMessage(message: Message)
+    suspend fun insertMessage(message: Message)
 
     suspend fun getMessages(chatId: String): List<Message>
 

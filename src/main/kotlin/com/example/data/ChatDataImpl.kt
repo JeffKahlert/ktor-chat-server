@@ -12,17 +12,9 @@ class ChatDataImpl(
     private val db: CoroutineDatabase
 ) : ChatDataSource {
 
-    private val chats = db.getCollection<Chat>()
     private val sessions = mutableListOf<ChatSession>()
 
-    override suspend fun getAllChats(): List<Chat> {
-        return chats.find().toList()
-    }
-
-    override suspend fun insertChat(chat: Chat) {
-        chats.insertOne(chat)
-    }
-    override suspend fun saveMessage(message: Message) {
+    override suspend fun insertMessage(message: Message) {
         val collection = db.getCollection<Message>()
         collection.insertOne(message)
     }

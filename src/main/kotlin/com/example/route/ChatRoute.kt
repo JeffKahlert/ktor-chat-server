@@ -28,7 +28,7 @@ fun Route.chat(chatDataSource: ChatDataSource) {
                         receiverId = chatId.split("-")[1],
                         content = receivedText
                     )
-                    chatDataSource.saveMessage(message)
+                    chatDataSource.insertMessage(message)
                     chatDataSource.broadcastMessage(message)
                 }
             }
