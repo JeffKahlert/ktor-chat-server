@@ -1,8 +1,9 @@
 package com.example.session
 
-class ChatSession(
-    val sessionId: String,
-    val participantOne: String, // sender
-    val participantTwo: String, // receiver
-) {
-}
+import io.ktor.websocket.*
+
+data class ChatSession(
+    val chatId: String,
+    val userId: String,
+    val session: DefaultWebSocketSession
+)

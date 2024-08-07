@@ -9,4 +9,6 @@ interface MessageDataSource {
     suspend fun insertMessage(message: Message)
 
     suspend fun getMessageByUserId(userId: String): Message?
+
+    suspend fun getMessagesByChatId(chatId: String): List<Message>?
 }

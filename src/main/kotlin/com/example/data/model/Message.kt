@@ -7,11 +7,12 @@ import org.bson.types.ObjectId
 
 @Serializable
 class Message(
-    val content: String,
+    @BsonId
+    val id: String = ObjectId().toString(),
+    val chatId: String,
     val senderId: String,
     val receiverId: String,
-    val timestamp: Long,
-    @BsonId
-    val id: String = ObjectId().toString()
+    val content: String,
+    val timestamp: Long = System.currentTimeMillis()
 ) {
 }
