@@ -2,6 +2,7 @@ package com.example.route
 
 import com.example.chat.ChatController
 import com.example.data.ChatDataSource
+import com.example.data.MessageDataSource
 import com.example.data.model.Message
 import com.example.session.ChatSession
 import io.ktor.http.*
@@ -15,8 +16,7 @@ import kotlinx.coroutines.channels.consumeEach
 import java.util.concurrent.ConcurrentHashMap
 
 fun Route.chat(
-    chatDataSource: ChatDataSource,
-    chatController: ChatController
+    chatController: ChatController,
 ) {
     webSocket("/chat/{chatId}/{userId}") {
         val chatId = call.parameters["chatId"] ?: return@webSocket close(CloseReason(CloseReason.Codes.CANNOT_ACCEPT, "No chatId"))
@@ -36,9 +36,8 @@ fun Route.chat(
                     val receivedText = frame.readText()
                     chatController.sendMessage(
                         chatId,
-                        userId,
-                        receiverId = chatId.last().toString(),
-                        receivedText)
+                        receivedText
+                    )
                 }
             }
         } catch (ex: Exception) {
@@ -50,9 +49,10 @@ fun Route.chat(
 
     get("/messages/{chatId}") {
         val chatId = call.parameters["chatId"] ?: return@get
+        val messages = chatController.getAllMessagesFromChatId(chatId) ?: emptyList()
         call.respond(
             HttpStatusCode.OK,
-            chatDataSource.getMessages(chatId)
+            messages
         )
     }
 }

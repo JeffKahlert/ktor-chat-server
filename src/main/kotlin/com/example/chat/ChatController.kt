@@ -25,12 +25,13 @@ class ChatController(
         )
     }
 
-    suspend fun sendMessage(chatId: String, userId: String, receiverId: String, messageContent: String) {
+    suspend fun sendMessage(chatId: String, messageContent: String) {
+        val sortDigitChatId = chatId.toCharArray().sorted().joinToString("")
         participants.values.forEach { p ->
             val message = Message(
-                chatId = chatId,
-                senderId = userId,
-                receiverId = receiverId,
+                chatId = sortDigitChatId,
+                senderId = chatId.first().toString(),
+                receiverId = chatId.last().toString(),
                 content = messageContent
             )
             messageDataSource.insertMessage(message)

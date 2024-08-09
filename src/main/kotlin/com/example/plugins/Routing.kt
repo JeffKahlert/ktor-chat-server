@@ -16,12 +16,11 @@ import org.koin.ktor.ext.inject
 fun Application.configureRouting() {
     val userDataSource by inject<UserDataSource>()
     val keyDataSource by inject<KeyDataSource>()
-    val chatDataSource by inject<ChatDataSource>()
     val messageDataSource by inject<MessageDataSource>()
 
     routing{
         keys(keyDataSource = keyDataSource, userDataSource = userDataSource)
         userRoute(userDataSource = userDataSource)
-        chat(chatDataSource = chatDataSource, chatController = ChatController(messageDataSource))
+        chat(chatController = ChatController(messageDataSource))
     }
 }

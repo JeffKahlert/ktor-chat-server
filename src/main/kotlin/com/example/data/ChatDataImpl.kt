@@ -21,7 +21,7 @@ class ChatDataImpl(
 
     override suspend fun getMessages(chatId: String): List<Message> {
         val collection = db.getCollection<Message>()
-        return collection.find(Message::chatId eq chatId).toList()
+        return collection.find(Message::chatId eq chatId.toCharArray().sorted().joinToString("")).toList()
     }
 
     override suspend fun addSession(session: ChatSession) {

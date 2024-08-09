@@ -23,6 +23,6 @@ class MessageDataImpl(
     }
 
     override suspend fun getMessagesByChatId(chatId: String): List<Message> {
-        return messages.find(Message::chatId eq chatId).toList()
+        return messages.find(Message::chatId eq chatId.toCharArray().sorted().joinToString("")).toList()
     }
 }
