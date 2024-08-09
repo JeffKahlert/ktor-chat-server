@@ -7,8 +7,6 @@ import org.bson.types.ObjectId
 
 @Serializable
 class Message(
-    @BsonId
-    val id: String = ObjectId().toString(),
     val chatId: String,
     val senderId: String,
     val receiverId: String,

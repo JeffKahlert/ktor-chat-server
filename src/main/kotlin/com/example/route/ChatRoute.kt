@@ -1,5 +1,6 @@
 package com.example.route
 
+import com.example.chat.ChatController
 import com.example.data.ChatDataSource
 import com.example.data.model.Message
 import com.example.session.ChatSession
@@ -13,35 +14,37 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import java.util.concurrent.ConcurrentHashMap
 
-fun Route.chat(chatDataSource: ChatDataSource) {
-    val members = ConcurrentHashMap<String, WebSocketSession>()
-
+fun Route.chat(
+    chatDataSource: ChatDataSource,
+    chatController: ChatController
+) {
     webSocket("/chat/{chatId}/{userId}") {
         val chatId = call.parameters["chatId"] ?: return@webSocket close(CloseReason(CloseReason.Codes.CANNOT_ACCEPT, "No chatId"))
         val userId = call.parameters["userId"] ?: return@webSocket close(CloseReason(CloseReason.Codes.CANNOT_ACCEPT, "No userId"))
 
-        val chatSession = ChatSession(chatId, userId)
-        call.sessions.set(chatSession)
+        val chatSession = call.sessions.get<ChatSession>()
+        if (chatSession == null) {
+            close(CloseReason(CloseReason.Codes.VIOLATED_POLICY, "No chatId"))
+            return@webSocket
+        }
 
-        members[userId] = this
 
         try {
+            chatController.joinChat(userId, chatId, this)
             incoming.consumeEach { frame ->
                 if (frame is Frame.Text) {
                     val receivedText = frame.readText()
-                    val message = Message(
-                        chatId = chatId,
-                        senderId = userId,
-                        receiverId = chatId.split("-")[1],
-                        content = receivedText
-                    )
-                    chatDataSource.insertMessage(message)
-                    chatDataSource.broadcastMessage(message, members)
+                    chatController.sendMessage(
+                        chatId,
+                        userId,
+                        receiverId = chatId.last().toString(),
+                        receivedText)
                 }
             }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         } finally {
-            members.remove(userId)
-            chatDataSource.removeSession(chatId, userId)
+            chatController.disconnect(chatSession.userId)
         }
     }
 

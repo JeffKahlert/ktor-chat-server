@@ -1,8 +1,11 @@
 package com.example.plugins
 
+import com.example.chat.ChatController
 import com.example.data.ChatDataSource
 import com.example.data.KeyDataSource
+import com.example.data.MessageDataSource
 import com.example.data.UserDataSource
+import com.example.data.model.Chat
 import com.example.route.chat
 import com.example.route.keys
 import com.example.route.userRoute
@@ -14,10 +17,11 @@ fun Application.configureRouting() {
     val userDataSource by inject<UserDataSource>()
     val keyDataSource by inject<KeyDataSource>()
     val chatDataSource by inject<ChatDataSource>()
+    val messageDataSource by inject<MessageDataSource>()
 
     routing{
         keys(keyDataSource = keyDataSource, userDataSource = userDataSource)
         userRoute(userDataSource = userDataSource)
-        chat(chatDataSource = chatDataSource)
+        chat(chatDataSource = chatDataSource, chatController = ChatController(messageDataSource))
     }
 }

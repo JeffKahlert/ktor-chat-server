@@ -19,7 +19,7 @@ class MessageDataImpl(
     }
 
     override suspend fun getMessageByUserId(userId: String): Message? {
-        return messages.findOne(Message::id eq userId)
+        return messages.findOne(Message::senderId eq userId)
     }
 
     override suspend fun getMessagesByChatId(chatId: String): List<Message> {
